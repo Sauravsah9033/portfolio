@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sah Saurav Krishna - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --accent:#00C853;--accent-light:#69F0AE;--accent-dark:#00a844;
+            --accent-glow:rgba(0,200,83,0.3);
+            --bg-primary:#0a0a0a;--bg-secondary:#111;--bg-card:#1a1a1a;
+            --text-primary:#fff;--text-secondary:#a0a0a0;--text-muted:#666;
+            --border:#2a2a2a;
+        }
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:var(--bg-primary);color:var(--text-primary);overflow-x:hidden}
+        ::selection{background:var(--accent);color:#000}
+        ::-webkit-scrollbar{width:6px}
+        ::-webkit-scrollbar-track{background:var(--bg-primary)}
+        ::-webkit-scrollbar-thumb{background:#333;border-radius:4px}
+        ::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+        /* LOADER */
+        .page-loader{position:fixed;inset:0;z-index:9999;background:var(--bg-primary);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
+        .page-loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .loader-ring-wrap{position:relative;width:90px;height:90px}
+        .loader-ring-svg{width:90px;height:90px;transform:rotate(-90deg)}
+        .loader-ring-bg{fill:none;stroke:var(--border);stroke-width:3}
+        .loader-ring-fill{fill:none;stroke:url(#ringGrad);stroke-width:3;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;animation:ringDraw 1.2s cubic-bezier(.4,0,.2,1) forwards}
+        @keyframes ringDraw{0%{stroke-dashoffset:283}100%{stroke-dashoffset:0}}
+        .loader-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.2rem;font-weight:900;color:var(--accent);animation:logoPulse 1s ease-in-out infinite alternate}
+        .loader-logo span{color:var(--text-primary)}
+        @keyframes logoPulse{0%{opacity:.6;transform:translate(-50%,-50%) scale(.9)}100%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}}
+        .loader-orbit{position:absolute;top:50%;left:50%;width:65px;height:65px;margin:-32px 0 0 -32px;border-radius:50%;animation:orbitSpin 1.5s linear infinite}
+        .loader-orbit::after{content:'';position:absolute;top:0;left:50%;width:7px;height:7px;margin:-3px 0 0 -3px;background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent),0 0 20px rgba(0,200,83,.4)}
+        @keyframes orbitSpin{to{transform:rotate(360deg)}}
+        .loader-orbit2{position:absolute;top:50%;left:50%;width:82px;height:82px;margin:-41px 0 0 -41px;border-radius:50%;animation:orbitSpin2 2s linear infinite reverse}
+        .loader-orbit2::after{content:'';position:absolute;bottom:0;left:50%;width:4px;height:4px;margin:2px 0 0 -2px;background:var(--accent-light);border-radius:50%;box-shadow:0 0 6px var(--accent-light)}
+        @keyframes orbitSpin2{to{transform:rotate(360deg)}}
+        .loader-bar-wrap{margin-top:2rem;width:140px;height:3px;background:var(--border);border-radius:3px;overflow:hidden}
+        .loader-bar-fill{height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent-light));box-shadow:0 0 10px var(--accent-glow);animation:barFill 1s cubic-bezier(.4,0,.2,1) forwards}
+        @keyframes barFill{0%{width:0}100%{width:100%}}
+        .loader-text{margin-top:1rem;font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:4px;font-weight:500}
+        .loader-text span{display:inline-block;animation:textFade 1.2s ease-in-out infinite}
+        .loader-text span:nth-child(2){animation-delay:.1s}.loader-text span:nth-child(3){animation-delay:.2s}.loader-text span:nth-child(4){animation-delay:.3s}.loader-text span:nth-child(5){animation-delay:.4s}.loader-text span:nth-child(6){animation-delay:.5s}.loader-text span:nth-child(7){animation-delay:.6s}
+        @keyframes textFade{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
+        .page-transition{position:fixed;inset:0;z-index:9998;background:var(--bg-primary);transform:scaleY(0);pointer-events:none}
+        .page-transition.entering{animation:ptEnter .5s cubic-bezier(.4,0,.2,1) forwards}
+        .page-transition.leaving{animation:ptLeave .5s cubic-bezier(.4,0,.2,1) forwards;transform-origin:top}
+        @keyframes ptEnter{0%{transform:scaleY(0);transform-origin:bottom}100%{transform:scaleY(1);transform-origin:bottom}}
+        @keyframes ptLeave{0%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(0);transform-origin:top}}
+        .page-section{display:none;opacity:0;transition:opacity .5s}
+        .page-section.active{display:block}
+        .page-section.visible{opacity:1}
+
+        /* NAV */
+        .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+        .nav-logo{font-size:1.3rem;font-weight:800;color:var(--accent);text-decoration:none;letter-spacing:-.5px}
+        .nav-logo span{color:var(--text-primary)}
+        .nav-links{display:flex;gap:1.5rem;list-style:none;align-items:center}
+        .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:.75rem;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;transition:color .3s;position:relative;padding:.3rem 0}
+        .nav-links a::after{content:'';position:absolute;bottom:-2px;left:50%;width:0;height:2px;background:var(--accent);transition:all .3s;transform:translateX(-50%);border-radius:2px}
+        .nav-links a:hover,.nav-links a.active{color:var(--accent)}
+        .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+
+        /* HAMBURGER TOGGLE */
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:5px;z-index:1001;position:relative;width:30px;height:24px}
+        .hamburger span{display:block;position:absolute;left:0;width:100%;height:2px;background:var(--text-primary);border-radius:2px;transition:all .25s cubic-bezier(.4,0,.2,1)}
+        .hamburger span:nth-child(1){top:0}
+        .hamburger span:nth-child(2){top:10px}
+        .hamburger span:nth-child(3){top:20px}
+        .hamburger.open span:nth-child(1){top:10px;transform:rotate(45deg);background:var(--accent)}
+        .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+        .hamburger.open span:nth-child(3){top:10px;transform:rotate(-45deg);background:var(--accent)}
+
+        /* MOBILE MENU - FAST SLIDE */
+        .mobile-menu{display:flex;position:fixed;inset:0;background:rgba(10,10,10,.98);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:1.8rem;transform:translateX(100%);opacity:0;visibility:hidden;transition:transform .25s cubic-bezier(.4,0,.2,1),opacity .2s ease,visibility .2s ease}
+        .mobile-menu.open{transform:translateX(0);opacity:1;visibility:visible}
+        .mobile-menu a{color:var(--text-primary);text-decoration:none;font-size:1.3rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;transition:color .2s;transform:translateX(30px);opacity:0}
+        .mobile-menu.open a{transform:translateX(0);opacity:1}
+        .mobile-menu.open a:nth-child(1){transition-delay:.05s}
+        .mobile-menu.open a:nth-child(2){transition-delay:.1s}
+        .mobile-menu.open a:nth-child(3){transition-delay:.15s}
+        .mobile-menu.open a:nth-child(4){transition-delay:.2s}
+        .mobile-menu a:hover{color:var(--accent)}
+        .mobile-menu .mobile-social{display:flex;gap:.6rem;margin-top:1rem;opacity:0;transform:translateY(15px);transition:all .25s ease}
+        .mobile-menu.open .mobile-social{opacity:1;transform:translateY(0);transition-delay:.28s}
+        .mobile-menu .mobile-social a{font-size:1.1rem;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all .25s}
+        .mobile-menu .mobile-social a:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,200,83,.1);transform:none!important;opacity:1!important}
+
+        /* HERO */
+        .hero{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:linear-gradient(135deg,#0a0a1a 0%,#1a0a2e 40%,#0f0a20 70%,#0a0a1a 100%)}
+        .hero-gears{position:absolute;inset:0;z-index:0;overflow:hidden}
+        .gear-svg{position:absolute;opacity:.07}
+        .gear-svg.g1{top:-60px;right:-40px;width:300px;height:300px;animation:rS 40s linear infinite}
+        .gear-svg.g2{bottom:-30px;left:-60px;width:250px;height:250px;animation:rS 50s linear infinite reverse}
+        .gear-svg.g3{top:30%;left:10%;width:150px;height:150px;animation:rS 35s linear infinite}
+        .gear-svg.g4{bottom:25%;right:20%;width:120px;height:120px;animation:rS 45s linear infinite reverse}
+        .gear-svg.g5{top:15%;left:45%;width:80px;height:80px;animation:rS 30s linear infinite}
+        @keyframes rS{to{transform:rotate(360deg)}}
+        .hero-glow{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0}
+        .hero-glow.o1{width:400px;height:400px;top:-80px;right:8%;background:rgba(124,58,237,.18)}
+        .hero-glow.o2{width:300px;height:300px;bottom:-40px;left:3%;background:rgba(139,92,246,.12)}
+        .hero-glow.o3{width:200px;height:200px;top:40%;left:35%;background:rgba(167,139,250,.08)}
+        .hero-main{position:relative;z-index:2;flex:1;display:flex;align-items:center;max-width:1200px;margin:0 auto;padding:0 1.5rem;width:100%}
+        .hero-text{max-width:580px}
+        .hero-text .greeting{font-size:.75rem;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:3px;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+        .hero-text .greeting::before{content:'';width:30px;height:2px;background:var(--accent);display:inline-block}
+        .hero-text h1{font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1.08;margin-bottom:.7rem;letter-spacing:-1.5px;color:#fff}
+        .hero-text h1 span{color:var(--accent)}
+        .hero-text .subtitle{font-size:clamp(1rem,2.2vw,1.4rem);color:var(--text-secondary);font-weight:300;margin-bottom:1.2rem}
+        .hero-text .subtitle .typed-text{color:var(--accent);font-weight:600}
+        .typing-cursor{display:inline-block;width:2px;height:1.1em;background:var(--accent);margin-left:2px;animation:blink 1s step-end infinite;vertical-align:text-bottom}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+        .hero-text .motivation{color:var(--text-muted);font-size:.85rem;line-height:1.7;max-width:460px;margin-bottom:1.8rem;font-weight:400}
+        .hero-btns{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center}
+        .btn-primary{display:inline-flex;align-items:center;gap:.4rem;padding:.75rem 1.6rem;background:var(--accent);color:#000;border:none;border-radius:50px;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all .3s;font-family:'Inter',sans-serif;box-shadow:0 4px 20px var(--accent-glow)}
+        .btn-primary:hover{background:var(--accent-dark);transform:translateY(-2px);box-shadow:0 8px 30px var(--accent-glow)}
+        .hero-person{position:relative;z-index:2;margin-left:auto;flex-shrink:0}
+        .hero-person img{width:280px;height:380px;object-fit:cover;object-position:top center;border-radius:14px;mask-image:linear-gradient(to bottom,black 75%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,black 75%,transparent 100%)}
+        .hero-person::after{content:'';position:absolute;inset:0;border-radius:14px;background:linear-gradient(180deg,transparent 55%,var(--bg-primary) 100%);pointer-events:none}
+        .hero-bottom{position:relative;z-index:2;border-top:1px solid var(--border);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,.7);backdrop-filter:blur(8px);flex-wrap:wrap;gap:.8rem}
+        .hero-bottom-left{display:flex;align-items:center;gap:.8rem;min-width:0;flex:1 1 auto}
+        .hero-bottom-avatar{width:38px;height:38px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;flex-shrink:0}
+        .hero-bottom-avatar img{width:100%;height:100%;object-fit:cover}
+        .hero-bottom-info .name{font-weight:700;font-size:.85rem;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .hero-bottom-info .tagline{color:var(--text-muted);font-size:.65rem;margin-top:.1rem;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+        .hero-bottom-center{color:var(--text-muted);font-size:.7rem;display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+        .hero-bottom-center .iconify{color:var(--accent);font-size:.8rem}
+        .hero-bottom-right{color:var(--text-muted);font-size:.65rem;text-align:right;line-height:1.4;flex-shrink:0}
+
+        /* SOCIAL ICONS */
+        .social-icons{display:flex;gap:.5rem;justify-content:center;margin-top:.5rem}
+        .social-icons a{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all .3s;text-decoration:none;font-size:.85rem}
+        .social-icons a:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,200,83,.1)}
+
+        /* HERO SOCIAL BAR */
+        .hero-social-bar{display:flex;gap:.5rem;align-items:center;margin-top:1rem}
+        .hero-social-bar a{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:inline-flex;align-items:center;justify-content:center;color:var(--text-secondary);transition:all .3s;text-decoration:none;font-size:1rem;background:rgba(255,255,255,.03)}
+        .hero-social-bar a:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,200,83,.12);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,200,83,.2)}
+
+        /* SECTION COMMON */
+        .section{padding:5rem 1.25rem;padding-top:6rem}
+        .section-inner{max-width:1200px;margin:0 auto}
+        .section-header{text-align:center;margin-bottom:3rem}
+        .section-header .label{font-size:.75rem;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:3px;margin-bottom:.4rem}
+        .section-header h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-1px}
+        .section-header .line{width:50px;height:3px;background:var(--accent);margin:.8rem auto 0;border-radius:2px}
+        .sub-text{text-align:center;max-width:650px;margin:-1.5rem auto 2.5rem;color:var(--text-secondary);font-size:.95rem;line-height:1.7}
+
+        /* ABOUT */
+        .about-grid{display:grid;grid-template-columns:260px 1fr;gap:2.5rem;align-items:start}
+        .about-image{position:relative;width:260px;flex-shrink:0}
+        .about-image img{width:260px;height:320px;object-fit:cover;object-position:top center;border-radius:10px;border:2px solid var(--border)}
+        .about-image .accent-box{position:absolute;bottom:-10px;right:-10px;background:var(--accent);color:#000;padding:.7rem 1rem;border-radius:8px;font-weight:800;font-size:.9rem}
+        .about-info h3{font-size:1.6rem;font-weight:700;margin-bottom:.2rem}
+        .about-info .role{color:var(--accent);font-weight:600;font-size:.9rem;margin-bottom:1.2rem}
+        .about-info p{color:var(--text-secondary);line-height:1.7;margin-bottom:1.3rem;font-size:.9rem}
+        .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1.8rem}
+        .info-item{font-size:.82rem;color:var(--text-secondary)}
+        .info-item strong{color:var(--text-primary)}
+
+        /* SKILLS */
+        .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+        .skill-header{display:flex;justify-content:space-between;margin-bottom:.4rem}
+        .skill-header span{font-size:.82rem;font-weight:500}
+        .skill-header .pct{color:var(--accent);font-weight:700}
+        .skill-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+        .skill-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:3px;width:0;transition:width 1.5s ease}
+
+        /* INTERESTS */
+        .interests-wrap{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:2rem}
+        .interest-tag{padding:.5rem 1.2rem;border:1px solid var(--border);border-radius:50px;font-size:.8rem;color:var(--text-secondary);transition:all .3s;cursor:default}
+        .interest-tag:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,200,83,.1)}
+
+        /* FLOATING TESTIMONIALS */
+        .testimonials-carousel{margin-top:2rem;overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%)}
+        .testimonials-track{display:flex;gap:1.5rem;animation:testimonialScroll 25s linear infinite;width:max-content}
+        .testimonials-track:hover{animation-play-state:paused}
+        @keyframes testimonialScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        .testimonial-card{min-width:300px;max-width:300px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:all .3s;flex-shrink:0}
+        .testimonial-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+        .testimonial-card .stars{color:var(--accent);margin-bottom:.8rem;font-size:.85rem}
+        .testimonial-card p{color:var(--text-secondary);font-size:.85rem;line-height:1.6;font-style:italic;margin-bottom:1.2rem}
+        .testimonial-author{display:flex;align-items:center;gap:.7rem}
+        .testimonial-avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#000;font-weight:700;font-size:.85rem}
+        .testimonial-name{font-weight:600;font-size:.85rem}
+        .testimonial-role{color:var(--text-muted);font-size:.7rem}
+
+        /* RESUME */
+        .resume-summary{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:2rem;margin-bottom:2.5rem}
+        .resume-summary h3{font-size:1.3rem;font-weight:700;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
+        .resume-summary h3 .iconify{color:var(--accent)}
+        .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+        .summary-item{font-size:.85rem;color:var(--text-secondary)}
+        .summary-item strong{color:var(--text-primary)}
+        .summary-item .iconify{color:var(--accent);margin-right:.2rem}
+        .timeline-section{margin-bottom:2.5rem}
+        .timeline-section h3{font-size:1.3rem;font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem}
+        .timeline-section h3 .iconify{color:var(--accent)}
+        .timeline{position:relative;padding-left:1.8rem}
+        .timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--border)}
+        .timeline-item{position:relative;padding:0 0 2.5rem 2rem}
+        .timeline-item:last-child{padding-bottom:0}
+        .timeline-item::before{content:'';position:absolute;left:-5px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:3px solid var(--bg-primary)}
+        .timeline-item .year{display:inline-block;padding:.25rem .8rem;background:rgba(0,200,83,.15);color:var(--accent);border-radius:50px;font-size:.75rem;font-weight:600;margin-bottom:.6rem}
+        .timeline-item h4{font-size:1.05rem;font-weight:700;margin-bottom:.2rem}
+        .timeline-item .org{color:var(--accent);font-size:.85rem;margin-bottom:.2rem}
+        .timeline-item .score{color:var(--text-secondary);font-size:.85rem}
+        .timeline-item .score strong{color:var(--text-primary)}
+        .timeline-item .desc{color:var(--text-muted);font-size:.8rem;margin-top:.4rem;line-height:1.6}
+        .timeline-item .result{color:var(--accent);font-size:.75rem;margin-top:.2rem;font-weight:500}
+
+        /* PROJECTS */
+        .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+        .project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:all .3s}
+        .project-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,200,83,.1)}
+        .project-card .project-icon{width:44px;height:44px;border-radius:10px;background:rgba(0,200,83,.15);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.2rem;margin-bottom:.8rem}
+        .project-card h4{font-size:1rem;font-weight:700;margin-bottom:.4rem}
+        .project-card p{color:var(--text-secondary);font-size:.8rem;line-height:1.6}
+        .project-card .tech-tag{display:inline-block;margin-top:.8rem;padding:.25rem .7rem;background:rgba(0,200,83,.1);color:var(--accent);border-radius:50px;font-size:.7rem;font-weight:600}
+
+        /* CONTACT */
+        .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+        .map-container{width:100%;height:250px;border-radius:14px;overflow:hidden;border:1px solid var(--border);margin-bottom:1.5rem}
+        .map-container iframe{width:100%;height:100%;border:0;filter:invert(90%) hue-rotate(180deg)}
+        .contact-cards{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+        .contact-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;transition:all .3s;text-align:center}
+        .contact-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+        .contact-card .iconify{font-size:1.3rem;color:var(--accent);margin-bottom:.4rem}
+        .contact-card .card-label{font-size:.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.2rem}
+        .contact-card .card-value{font-size:.8rem;color:var(--text-primary);font-weight:500;word-break:break-all}
+        .contact-card .card-value a{color:var(--text-primary);text-decoration:none}
+        .contact-card .card-value a:hover{color:var(--accent)}
+        .contact-form{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:2rem}
+        .contact-form h3{font-size:1.2rem;font-weight:700;margin-bottom:1.2rem}
+        .form-group{margin-bottom:1rem}
+        .form-group label{display:block;font-size:.75rem;color:var(--text-secondary);margin-bottom:.3rem;font-weight:500}
+        .form-group input,.form-group textarea{width:100%;padding:.7rem .8rem;background:var(--bg-primary);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);font-family:'Inter',sans-serif;font-size:.85rem;transition:border-color .3s;outline:none}
+        .form-group input:focus,.form-group textarea:focus{border-color:var(--accent)}
+        .form-group textarea{resize:vertical;min-height:100px}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+        .btn-submit{width:100%;padding:.8rem;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:all .3s;font-family:'Inter',sans-serif}
+        .btn-submit:hover{background:var(--accent-dark);transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow)}
+        .form-toast{display:none;padding:.7rem 1.2rem;background:rgba(0,200,83,.15);border:1px solid var(--accent);border-radius:6px;color:var(--accent);font-size:.85rem;margin-top:.8rem;align-items:center;gap:.4rem}
+        .form-toast.show{display:flex}
+
+        /* FOOTER */
+        .footer{background:var(--bg-secondary);border-top:1px solid var(--border);padding:2rem 1.5rem}
+        .footer-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem}
+        .footer-left .footer-name{font-size:1.1rem;font-weight:700;color:var(--accent)}
+        .footer-left p{color:var(--text-muted);font-size:.8rem;margin-top:.2rem}
+        .footer-center{color:var(--text-muted);font-size:.75rem;text-align:center}
+        .footer-right .social-icons a{width:30px;height:30px;font-size:.8rem}
+
+        .reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        .back-to-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:900;width:42px;height:42px;border-radius:50%;background:var(--accent);color:#000;border:none;font-size:1rem;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 4px 12px var(--accent-glow)}
+        .back-to-top:hover{transform:translateY(-2px)}
+        .back-to-top.show{display:flex}
+        .cursor-glow{position:fixed;width:250px;height:250px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(0,200,83,.04) 0%,transparent 70%);transform:translate(-50%,-50%);transition:left .3s,top .3s}
+
+        /* ═══ RESPONSIVE ═══ */
+
+        /* Tablets */
+        @media(max-width:1024px){
+            .hero-main{flex-direction:column;text-align:center;padding-top:5rem}
+            .hero-text{max-width:100%;align-items:center}
+            .hero-text .greeting{justify-content:center}
+            .hero-text .motivation{margin:0 auto 1.5rem}
+            .hero-btns{justify-content:center}
+            .hero-person{display:none}
+            .hero-social-bar{justify-content:center}
+            .about-grid{grid-template-columns:1fr;gap:1.5rem}
+            .about-image{max-width:220px;margin:0 auto}
+            .about-info{text-align:center}
+            .info-grid{grid-template-columns:1fr 1fr}
+            .skills-grid{grid-template-columns:1fr 1fr}
+            .contact-grid{grid-template-columns:1fr}
+            .projects-grid{grid-template-columns:1fr 1fr}
+        }
+
+        /* Large phones */
+        @media(max-width:768px){
+            .nav-links{display:none}
+            .hamburger{display:flex}
+            .section{padding:4rem 1rem;padding-top:5rem}
+            .hero-bottom{flex-direction:column;gap:.6rem;text-align:center;padding:.8rem 1rem}
+            .hero-bottom-left{flex-direction:column}
+            .hero-bottom-right{text-align:center}
+            .hero-bottom-center{justify-content:center}
+            .info-grid{grid-template-columns:1fr 1fr}
+            .contact-cards{grid-template-columns:1fr 1fr}
+            .form-row{grid-template-columns:1fr}
+            .footer-inner{flex-direction:column;text-align:center}
+            .summary-grid{grid-template-columns:1fr 1fr}
+            .skills-grid{grid-template-columns:1fr 1fr}
+            .projects-grid{grid-template-columns:1fr}
+            .testimonial-card{min-width:260px;max-width:260px;padding:1.2rem}
+            .contact-form{padding:1.5rem}
+            .resume-summary{padding:1.5rem}
+        }
+
+        /* Small phones */
+        @media(max-width:480px){
+            .navbar{padding:.7rem 1rem}
+            .nav-logo{font-size:1.1rem}
+            .hero-main{padding:0 1rem;padding-top:4.5rem}
+            .hero-text h1{font-size:1.8rem;letter-spacing:-1px}
+            .hero-text .subtitle{font-size:1rem}
+            .hero-text .motivation{font-size:.8rem}
+            .btn-primary{padding:.65rem 1.3rem;font-size:.75rem}
+            .hero-social-bar a{width:34px;height:34px;font-size:.9rem}
+            .hero-bottom{padding:.6rem .8rem}
+            .hero-bottom-info .name{font-size:.8rem}
+            .hero-bottom-info .tagline{font-size:.6rem}
+            .section{padding:3.5rem .8rem;padding-top:4.5rem}
+            .section-header h2{font-size:1.6rem}
+            .section-header .label{font-size:.7rem;letter-spacing:2px}
+            .about-grid{grid-template-columns:1fr;gap:1.2rem}
+            .about-image{max-width:180px}
+            .about-image img{width:180px;height:230px}
+            .about-info h3{font-size:1.3rem}
+            .about-info .role{font-size:.8rem}
+            .about-info p{font-size:.82rem}
+            .info-grid{grid-template-columns:1fr;gap:.4rem}
+            .info-item{font-size:.78rem}
+            .skills-grid{grid-template-columns:1fr;gap:1.2rem}
+            .skill-header span{font-size:.78rem}
+            .interest-tag{padding:.4rem 1rem;font-size:.75rem}
+            .testimonial-card{min-width:230px;max-width:230px;padding:1rem}
+            .testimonial-card p{font-size:.78rem}
+            .contact-cards{grid-template-columns:1fr}
+            .contact-card{padding:1rem}
+            .contact-form{padding:1.2rem}
+            .contact-form h3{font-size:1.1rem}
+            .summary-grid{grid-template-columns:1fr}
+            .timeline-item h4{font-size:.95rem}
+            .timeline-item .org{font-size:.8rem}
+            .timeline-item .desc{font-size:.75rem}
+            .footer{padding:1.5rem .8rem}
+            .footer-left .footer-name{font-size:1rem}
+            .footer-left p{font-size:.75rem}
+            .social-icons a{width:28px;height:28px;font-size:.75rem}
+        }
+    </style>
+</head>
+<body>
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- LOADER -->
+<div class="page-loader" id="pageLoader">
+    <div class="loader-ring-wrap">
+        <svg class="loader-ring-svg" viewBox="0 0 100 100"><defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#00C853"/><stop offset="100%" style="stop-color:#69F0AE"/></linearGradient></defs><circle class="loader-ring-bg" cx="50" cy="50" r="45"/><circle class="loader-ring-fill" cx="50" cy="50" r="45"/></svg>
+        <div class="loader-orbit"></div><div class="loader-orbit2"></div>
+        <div class="loader-logo">S<span>K</span></div>
+    </div>
+    <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
+    <div class="loader-text"><span>L</span><span>O</span><span>A</span><span>D</span><span>I</span><span>N</span><span>G</span></div>
+</div>
+<div class="page-transition" id="pageTransition"></div>
+
+<!-- NAV -->
+<nav class="navbar" id="navbar">
+    <a href="#" class="nav-logo" data-page="home">S<span>Kumar</span></a>
+    <ul class="nav-links"><li><a href="#" class="active" data-page="home">Home</a></li><li><a href="#" data-page="about">About</a></li><li><a href="#" data-page="resume">Resume</a></li><li><a href="#" data-page="contact">Contact</a></li></ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#" data-page="home">Home</a><a href="#" data-page="about">About</a><a href="#" data-page="resume">Resume</a><a href="#" data-page="contact">Contact</a>
+    <div class="mobile-social">
+        <a href="https://www.facebook.com/share/18Tkq2KDax/" target="_blank" rel="noopener" aria-label="Facebook"><span class="iconify" data-icon="mdi:facebook"></span></a>
+        <a href="https://www.instagram.com/saurav.k001?igsh=Z2lhZ2pseHZxNTBz" target="_blank" rel="noopener" aria-label="Instagram"><span class="iconify" data-icon="mdi:instagram"></span></a>
+        <a href="https://www.linkedin.com/in/saurav-sah-702617249?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="iconify" data-icon="mdi:linkedin"></span></a>
+        <a href="https://github.com/Sauravsah9033" target="_blank" rel="noopener" aria-label="GitHub"><span class="iconify" data-icon="mdi:github"></span></a>
+        <a href="https://x.com/Sauravbhai123" target="_blank" rel="noopener" aria-label="Twitter"><span class="iconify" data-icon="mdi:twitter"></span></a>
+    </div>
+</div>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page-section active visible" id="page-home">
+    <section class="hero">
+        <div class="hero-gears">
+            <svg class="gear-svg g1" viewBox="0 0 200 200" fill="none"><path d="M100 20 L108 20 L110 8 L120 10 L117 22 L130 28 L138 18 L146 24 L138 34 L150 44 L160 38 L164 48 L152 54 L158 68 L170 66 L170 76 L158 76 L158 90 L170 94 L166 104 L154 100 L148 114 L160 122 L152 130 L140 122 L130 134 L140 144 L132 150 L120 140 L108 150 L112 162 L102 162 L102 150 L88 150 L86 164 L76 160 L80 148 L66 142 L56 154 L48 146 L58 134 L46 124 L36 132 L32 120 L44 116 L38 102 L26 106 L24 96 L36 94 L36 80 L24 76 L28 66 L40 70 L46 56 L34 48 L42 40 L54 50 L66 38 L56 28 L64 22 L76 32 L88 22 L84 10 L94 8 L96 20 Z" fill="#7C3AED"/><circle cx="100" cy="92" r="28" stroke="#7C3AED" stroke-width="3" fill="none"/></svg>
+            <svg class="gear-svg g2" viewBox="0 0 200 200" fill="none"><path d="M100 20 L108 20 L110 8 L120 10 L117 22 L130 28 L138 18 L146 24 L138 34 L150 44 L160 38 L164 48 L152 54 L158 68 L170 66 L170 76 L158 76 L158 90 L170 94 L166 104 L154 100 L148 114 L160 122 L152 130 L140 122 L130 134 L140 144 L132 150 L120 140 L108 150 L112 162 L102 162 L102 150 L88 150 L86 164 L76 160 L80 148 L66 142 L56 154 L48 146 L58 134 L46 124 L36 132 L32 120 L44 116 L38 102 L26 106 L24 96 L36 94 L36 80 L24 76 L28 66 L40 70 L46 56 L34 48 L42 40 L54 50 L66 38 L56 28 L64 22 L76 32 L88 22 L84 10 L94 8 L96 20 Z" fill="#7C3AED"/><circle cx="100" cy="92" r="28" stroke="#7C3AED" stroke-width="3" fill="none"/></svg>
+            <svg class="gear-svg g3" viewBox="0 0 200 200" fill="none"><path d="M100 20 L108 20 L110 8 L120 10 L117 22 L130 28 L138 18 L146 24 L138 34 L150 44 L160 38 L164 48 L152 54 L158 68 L170 66 L170 76 L158 76 L158 90 L170 94 L166 104 L154 100 L148 114 L160 122 L152 130 L140 122 L130 134 L140 144 L132 150 L120 140 L108 150 L112 162 L102 162 L102 150 L88 150 L86 164 L76 160 L80 148 L66 142 L56 154 L48 146 L58 134 L46 124 L36 132 L32 120 L44 116 L38 102 L26 106 L24 96 L36 94 L36 80 L24 76 L28 66 L40 70 L46 56 L34 48 L42 40 L54 50 L66 38 L56 28 L64 22 L76 32 L88 22 L84 10 L94 8 L96 20 Z" fill="#A78BFA"/><circle cx="100" cy="92" r="28" stroke="#A78BFA" stroke-width="3" fill="none"/></svg>
+            <svg class="gear-svg g4" viewBox="0 0 200 200" fill="none"><path d="M100 20 L108 20 L110 8 L120 10 L117 22 L130 28 L138 18 L146 24 L138 34 L150 44 L160 38 L164 48 L152 54 L158 68 L170 66 L170 76 L158 76 L158 90 L170 94 L166 104 L154 100 L148 114 L160 122 L152 130 L140 122 L130 134 L140 144 L132 150 L120 140 L108 150 L112 162 L102 162 L102 150 L88 150 L86 164 L76 160 L80 148 L66 142 L56 154 L48 146 L58 134 L46 124 L36 132 L32 120 L44 116 L38 102 L26 106 L24 96 L36 94 L36 80 L24 76 L28 66 L40 70 L46 56 L34 48 L42 40 L54 50 L66 38 L56 28 L64 22 L76 32 L88 22 L84 10 L94 8 L96 20 Z" fill="#A78BFA"/><circle cx="100" cy="92" r="28" stroke="#A78BFA" stroke-width="3" fill="none"/></svg>
+            <svg class="gear-svg g5" viewBox="0 0 200 200" fill="none"><path d="M100 20 L108 20 L110 8 L120 10 L117 22 L130 28 L138 18 L146 24 L138 34 L150 44 L160 38 L164 48 L152 54 L158 68 L170 66 L170 76 L158 76 L158 90 L170 94 L166 104 L154 100 L148 114 L160 122 L152 130 L140 122 L130 134 L140 144 L132 150 L120 140 L108 150 L112 162 L102 162 L102 150 L88 150 L86 164 L76 160 L80 148 L66 142 L56 154 L48 146 L58 134 L46 124 L36 132 L32 120 L44 116 L38 102 L26 106 L24 96 L36 94 L36 80 L24 76 L28 66 L40 70 L46 56 L34 48 L42 40 L54 50 L66 38 L56 28 L64 22 L76 32 L88 22 L84 10 L94 8 L96 20 Z" fill="#7C3AED"/><circle cx="100" cy="92" r="28" stroke="#7C3AED" stroke-width="3" fill="none"/></svg>
+        </div>
+        <div class="hero-glow o1"></div><div class="hero-glow o2"></div><div class="hero-glow o3"></div>
+        <div class="hero-main">
+            <div class="hero-text">
+                <div class="greeting">Welcome to my portfolio</div>
+                <h1>SAH SAURAV<br><span>KRISHNA</span></h1>
+                <div class="subtitle">I'm a <span class="typed-text" id="typedText"></span><span class="typing-cursor"></span></div>
+                <p class="motivation">A motivated diploma student in Computer Engineering, driven by curiosity and a passion for technology. Committed to learning, building, and growing into a skilled professional who turns ideas into impactful digital solutions.</p>
+                <div class="hero-btns">
+                    <a href="#" class="btn-primary" data-page="contact"><span class="iconify" data-icon="mdi:email-outline"></span> Contact Me</a>
+                </div>
+                <div class="hero-social-bar">
+                    <a href="https://www.facebook.com/share/18Tkq2KDax/" target="_blank" rel="noopener" aria-label="Facebook"><span class="iconify" data-icon="mdi:facebook"></span></a>
+                    <a href="https://www.instagram.com/saurav.k001?igsh=Z2lhZ2pseHZxNTBz" target="_blank" rel="noopener" aria-label="Instagram"><span class="iconify" data-icon="mdi:instagram"></span></a>
+                    <a href="https://www.linkedin.com/in/saurav-sah-702617249?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="iconify" data-icon="mdi:linkedin"></span></a>
+                    <a href="https://github.com/Sauravsah9033" target="_blank" rel="noopener" aria-label="GitHub"><span class="iconify" data-icon="mdi:github"></span></a>
+                    <a href="https://x.com/Sauravbhai123" target="_blank" rel="noopener" aria-label="Twitter"><span class="iconify" data-icon="mdi:twitter"></span></a>
+                </div>
+            </div>
+            <div class="hero-person"><img src="https://z-cdn-media.chatglm.cn/files/462f75dc-c165-491b-8ea0-614df0d09998.jpeg?auth_key=1879733650-0829d430a864469fae5407c753c7881e-0-7176320676616502f39ea28087b2f397" alt="Sah Saurav Krishna"></div>
+        </div>
+        <div class="hero-bottom">
+            <div class="hero-bottom-left">
+                <div class="hero-bottom-avatar"><img src="https://z-cdn-media.chatglm.cn/files/462f75dc-c165-491b-8ea0-614df0d09998.jpeg?auth_key=1879733650-0829d430a864469fae5407c753c7881e-0-7176320676616502f39ea28087b2f397" alt="SK"></div>
+                <div class="hero-bottom-info"><div class="name">Sah Saurav Krishna</div><div class="tagline">Student at Govt. Polytechnic, Daman — Diploma in Computer Engineering</div></div>
+            </div>
+            <div class="hero-bottom-center"><span class="iconify" data-icon="mdi:calendar-outline"></span><span id="currentDate"></span></div>
+            <div class="hero-bottom-right">© Copyright Reserved.<br>Developed by Saurav</div>
+        </div>
+    </section>
+</div>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<div class="page-section" id="page-about">
+    <section class="section"><div class="section-inner">
+        <div class="section-header reveal"><div class="label">Get To Know Me</div><h2>About Me</h2><div class="line"></div></div>
+        <div class="about-grid">
+            <div class="about-image reveal"><img src="https://z-cdn-media.chatglm.cn/files/462f75dc-c165-491b-8ea0-614df0d09998.jpeg?auth_key=1879733650-0829d430a864469fae5407c753c7881e-0-7176320676616502f39ea28087b2f397" alt="Sah Saurav Krishna"><div class="accent-box">ME</div></div>
+            <div class="about-info reveal">
+                <h3>Sah Saurav Krishna</h3><div class="role">Computer Engineering Student</div>
+                <p>A motivated and hardworking student seeking an opportunity where I can learn, contribute, and grow. I am committed to giving my best, supporting the team, and helping achieve success. I learn quickly, work responsibly, and always maintain a positive attitude.</p>
+                <div class="info-grid">
+                    <div class="info-item"><strong>Name:</strong> Sah Saurav Krishna</div>
+                    <div class="info-item"><strong>Birthday:</strong> 15 June 2006</div>
+                    <div class="info-item"><strong>College:</strong> Govt. Polytechnic, Daman</div>
+                    <div class="info-item"><strong>City:</strong> Daman</div>
+                    <div class="info-item"><strong>Degree:</strong> Diploma in Computer Eng.</div>
+                    <div class="info-item"><strong>Email:</strong> Sauravkummar702@gmail.com</div>
+                </div>
+                <a href="#" class="btn-primary" data-page="contact"><span class="iconify" data-icon="mdi:chat-outline"></span> Let's Talk</a>
+            </div>
+        </div>
+        <div style="padding:3rem 0 0">
+            <div class="section-header reveal"><div class="label">What I'm Good At</div><h2>My Skills</h2><div class="line"></div></div>
+            <div class="skills-grid reveal">
+                <div class="skill-item"><div class="skill-header"><span>HTML, CSS & Web Development</span><span class="pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-width="75"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span>Database Management</span><span class="pct">70%</span></div><div class="skill-bar"><div class="skill-fill" data-width="70"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span>MS Office (Word, Excel, PPT)</span><span class="pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-width="80"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span>Data Entry & Typing</span><span class="pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-width="85"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span>C / C++ / Python / Java / PHP</span><span class="pct">65%</span></div><div class="skill-bar"><div class="skill-fill" data-width="65"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span>Customer Service & Cash Handling</span><span class="pct">90%</span></div><div class="skill-bar"><div class="skill-fill" data-width="90"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span>Computer Troubleshooting</span><span class="pct">72%</span></div><div class="skill-bar"><div class="skill-fill" data-width="72"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span>Quick Learner & Punctual</span><span class="pct">92%</span></div><div class="skill-bar"><div class="skill-fill" data-width="92"></div></div></div>
+            </div>
+        </div>
+        <div class="reveal" style="padding-top:3rem;text-align:center">
+            <div class="label" style="font-size:.75rem;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:3px;margin-bottom:.8rem">I'm Interested In</div>
+            <div class="interests-wrap"><span class="interest-tag">Travelling</span><span class="interest-tag">Exploring New Places</span><span class="interest-tag">Cooking</span><span class="interest-tag">Problem Solving</span><span class="interest-tag">Puzzles</span><span class="interest-tag">Reading</span><span class="interest-tag">Self-Learning</span><span class="interest-tag">Technology</span><span class="interest-tag">Coding</span><span class="interest-tag">Music</span></div>
+        </div>
+        <div class="reveal" style="padding-top:4rem">
+            <div class="section-header"><div class="label">What People Say</div><h2>Check My Testimonials</h2><div class="line"></div></div>
+            <div class="testimonials-carousel"><div class="testimonials-track" id="testimonialTrack">
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span></div><p>"Saurav is a dedicated and hardworking individual. His willingness to learn and adapt makes him a valuable team member."</p><div class="testimonial-author"><div class="testimonial-avatar">R</div><div><div class="testimonial-name">Rajesh Sir</div><div class="testimonial-role">Supervisor, Olive Healthcare</div></div></div></div>
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span></div><p>"Very punctual and responsible at work. Saurav handles customer transactions with great accuracy and always stays calm under pressure."</p><div class="testimonial-author"><div class="testimonial-avatar">M</div><div><div class="testimonial-name">Manager</div><div class="testimonial-role">D-Mart, Daman</div></div></div></div>
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star-half-full"></span></div><p>"A quick learner with excellent problem-solving skills. Saurav consistently puts in extra effort to deliver quality results."</p><div class="testimonial-author"><div class="testimonial-avatar">P</div><div><div class="testimonial-name">Prof. Patel</div><div class="testimonial-role">Govt. Polytechnic, Daman</div></div></div></div>
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span></div><p>"Saurav's positive attitude and dedication to work make him stand out. He always goes the extra mile to get things done right."</p><div class="testimonial-author"><div class="testimonial-avatar">A</div><div><div class="testimonial-name">Amit Shah</div><div class="testimonial-role">Colleague, D-Mart</div></div></div></div>
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span></div><p>"One of the most dependable students I've taught. Saurav grasps concepts quickly and applies them effectively in practical scenarios."</p><div class="testimonial-author"><div class="testimonial-avatar">D</div><div><div class="testimonial-name">Dr. Desai</div><div class="testimonial-role">HOD, Computer Eng.</div></div></div></div>
+                <!-- Duplicates for seamless loop -->
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span></div><p>"Saurav is a dedicated and hardworking individual. His willingness to learn and adapt makes him a valuable team member."</p><div class="testimonial-author"><div class="testimonial-avatar">R</div><div><div class="testimonial-name">Rajesh Sir</div><div class="testimonial-role">Supervisor, Olive Healthcare</div></div></div></div>
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span></div><p>"Very punctual and responsible at work. Saurav handles customer transactions with great accuracy and always stays calm under pressure."</p><div class="testimonial-author"><div class="testimonial-avatar">M</div><div><div class="testimonial-name">Manager</div><div class="testimonial-role">D-Mart, Daman</div></div></div></div>
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star-half-full"></span></div><p>"A quick learner with excellent problem-solving skills. Saurav consistently puts in extra effort to deliver quality results."</p><div class="testimonial-author"><div class="testimonial-avatar">P</div><div><div class="testimonial-name">Prof. Patel</div><div class="testimonial-role">Govt. Polytechnic, Daman</div></div></div></div>
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span></div><p>"Saurav's positive attitude and dedication to work make him stand out. He always goes the extra mile to get things done right."</p><div class="testimonial-author"><div class="testimonial-avatar">A</div><div><div class="testimonial-name">Amit Shah</div><div class="testimonial-role">Colleague, D-Mart</div></div></div></div>
+                <div class="testimonial-card"><div class="stars"><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span><span class="iconify" data-icon="mdi:star"></span></div><p>"One of the most dependable students I've taught. Saurav grasps concepts quickly and applies them effectively in practical scenarios."</p><div class="testimonial-author"><div class="testimonial-avatar">D</div><div><div class="testimonial-name">Dr. Desai</div><div class="testimonial-role">HOD, Computer Eng.</div></div></div></div>
+            </div></div>
+        </div>
+    </div></section>
+    <footer class="footer"><div class="footer-inner"><div class="footer-left"><div class="footer-name">Sah Saurav Krishna</div><p>Student at Govt. Polytechnic, Daman<br>Pursuing Diploma in Computer Engineering</p></div><div class="footer-center">© 2025 Sah Saurav Krishna. All rights reserved.</div><div class="footer-right"><div class="social-icons"><a href="https://www.facebook.com/share/18Tkq2KDax/" target="_blank" rel="noopener" aria-label="Facebook"><span class="iconify" data-icon="mdi:facebook"></span></a><a href="https://www.instagram.com/saurav.k001?igsh=Z2lhZ2pseHZxNTBz" target="_blank" rel="noopener" aria-label="Instagram"><span class="iconify" data-icon="mdi:instagram"></span></a><a href="https://www.linkedin.com/in/saurav-sah-702617249?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="iconify" data-icon="mdi:linkedin"></span></a><a href="https://github.com/Sauravsah9033" target="_blank" rel="noopener" aria-label="GitHub"><span class="iconify" data-icon="mdi:github"></span></a><a href="https://x.com/Sauravbhai123" target="_blank" rel="noopener" aria-label="Twitter"><span class="iconify" data-icon="mdi:twitter"></span></a></div></div></div></footer>
+</div>
+
+<!-- ═══════════ RESUME ═══════════ -->
+<div class="page-section" id="page-resume">
+    <section class="section"><div class="section-inner">
+        <div class="section-header reveal"><div class="label">My Background</div><h2>Resume</h2><div class="line"></div></div>
+        <p class="sub-text reveal">Computer Engineering Student | Motivated to Learn, Contribute & Grow</p>
+        <div class="resume-summary reveal"><h3><span class="iconify" data-icon="mdi:account-outline"></span> SK Summary</h3><div class="summary-grid"><div class="summary-item"><strong>Sah Saurav Krishna</strong></div><div class="summary-item"><span class="iconify" data-icon="mdi:map-marker-outline"></span> Daman, India</div><div class="summary-item"><span class="iconify" data-icon="mdi:phone-outline"></span> +91 9662413299</div><div class="summary-item"><span class="iconify" data-icon="mdi:email-outline"></span> Sauravkummar702@gmail.com</div></div></div>
+        <div class="timeline-section reveal"><h3><span class="iconify" data-icon="mdi:school-outline"></span> Education</h3><div class="timeline">
+            <div class="timeline-item"><div class="year">2021 – 2022</div><h4>Class X (SSC)</h4><div class="org">Shree Swaminarayan Vidyalaya, Daman (GSEB)</div><div class="score">Percentage: <strong>53.56%</strong></div><div class="desc">Completed secondary schooling under the Gujarat Secondary and Higher Secondary Education Board.</div></div>
+            <div class="timeline-item"><div class="year">2023 – 2026</div><h4>Diploma in Computer Engineering</h4><div class="org">Govt. Polytechnic, Daman</div><div class="score">CGPA: <strong>7.8</strong></div><div class="desc">Currently pursuing a diploma in Computer Engineering, gaining hands-on experience in programming, database management, web development, and computer networks.</div></div>
+        </div></div>
+        <div class="timeline-section reveal"><h3><span class="iconify" data-icon="mdi:briefcase-outline"></span> Work Experience</h3><div class="timeline">
+            <div class="timeline-item"><div class="year">1 Month — 2023</div><h4>Packing Assistant</h4><div class="org">Olive Healthcare</div><div class="desc">Performed product packing and quality checks, followed safety and hygiene protocols.</div><div class="result"><span class="iconify" data-icon="mdi:check-circle-outline"></span> Result: Helped meet daily output targets and maintained low defect rate.</div></div>
+            <div class="timeline-item"><div class="year">Sept 2023 – 2026</div><h4>Cashier</h4><div class="org">Avenue Supermart (D-Mart)</div><div class="desc">Handled billing and customer transactions; processed cash, card and UPI payments accurately.</div><div class="result"><span class="iconify" data-icon="mdi:check-circle-outline"></span> Result: Maintained accurate reconciliations and improved checkout speed.</div></div>
+        </div></div>
+        <div class="reveal"><h3 style="font-size:1.3rem;font-weight:700;margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem"><span class="iconify" data-icon="mdi:code-braces" style="color:var(--accent)"></span> Projects</h3><div class="projects-grid">
+            <div class="project-card"><div class="project-icon"><span class="iconify" data-icon="mdi:web"></span></div><h4>Student Feedback Form Website</h4><p>Developed a website for student feedback form and hosted with a free domain using PHP language.</p><div class="tech-tag">PHP • HTML • CSS</div></div>
+            <div class="project-card"><div class="project-icon"><span class="iconify" data-icon="mdi:chart-line"></span></div><h4>Data Analysis Internship</h4><p>Completed a 4-week internship in data analysis using Python. Worked on data cleaning, visualization, and generating insights.</p><div class="tech-tag">Python • Data Analysis</div></div>
+        </div></div>
+    </div></section>
+    <footer class="footer"><div class="footer-inner"><div class="footer-left"><div class="footer-name">Sah Saurav Krishna</div><p>Student at Govt. Polytechnic, Daman<br>Pursuing Diploma in Computer Engineering</p></div><div class="footer-center">© 2025 Sah Saurav Krishna. All rights reserved.</div><div class="footer-right"><div class="social-icons"><a href="https://www.facebook.com/share/18Tkq2KDax/" target="_blank" rel="noopener" aria-label="Facebook"><span class="iconify" data-icon="mdi:facebook"></span></a><a href="https://www.instagram.com/saurav.k001?igsh=Z2lhZ2pseHZxNTBz" target="_blank" rel="noopener" aria-label="Instagram"><span class="iconify" data-icon="mdi:instagram"></span></a><a href="https://www.linkedin.com/in/saurav-sah-702617249?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="iconify" data-icon="mdi:linkedin"></span></a><a href="https://github.com/Sauravsah9033" target="_blank" rel="noopener" aria-label="GitHub"><span class="iconify" data-icon="mdi:github"></span></a><a href="https://x.com/Sauravbhai123" target="_blank" rel="noopener" aria-label="Twitter"><span class="iconify" data-icon="mdi:twitter"></span></a></div></div></div></footer>
+</div>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div class="page-section" id="page-contact">
+    <section class="section"><div class="section-inner">
+        <div class="section-header reveal"><div class="label">Get In Touch</div><h2>Contact</h2><div class="line"></div></div>
+        <p class="sub-text reveal">Feel free to reach out. I'm always open to discussing new opportunities, projects, or collaborations.</p>
+        <div class="contact-grid">
+            <div class="contact-left reveal">
+                <div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3752.1589656!2d72.8311!3d20.3974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be0d1a3d3d3d3d3%3A0x3d3d3d3d3d3d3d3d!2sDaman%2C%20India!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe></div>
+                <div class="contact-cards">
+                    <div class="contact-card"><span class="iconify" data-icon="mdi:map-marker-outline"></span><div class="card-label">Address</div><div class="card-value">Daman, India</div></div>
+                    <div class="contact-card"><span class="iconify" data-icon="mdi:phone-outline"></span><div class="card-label">Call Me</div><div class="card-value"><a href="tel:+919662413299">+91 9662413299</a></div></div>
+                    <div class="contact-card"><span class="iconify" data-icon="mdi:email-outline"></span><div class="card-label">Email Me</div><div class="card-value"><a href="mailto:Sauravkummar702@gmail.com">Sauravkummar702@gmail.com</a></div></div>
+                    <div class="contact-card"><span class="iconify" data-icon="mdi:account-group-outline"></span><div class="card-label">Social Profiles</div><div class="social-icons"><a href="https://www.facebook.com/share/18Tkq2KDax/" target="_blank" rel="noopener" aria-label="Facebook"><span class="iconify" data-icon="mdi:facebook"></span></a><a href="https://www.instagram.com/saurav.k001?igsh=Z2lhZ2pseHZxNTBz" target="_blank" rel="noopener" aria-label="Instagram"><span class="iconify" data-icon="mdi:instagram"></span></a><a href="https://www.linkedin.com/in/saurav-sah-702617249?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="iconify" data-icon="mdi:linkedin"></span></a><a href="https://x.com/Sauravbhai123" target="_blank" rel="noopener" aria-label="Twitter"><span class="iconify" data-icon="mdi:twitter"></span></a></div></div>
+                </div>
+            </div>
+            <div class="contact-form reveal"><h3>Send Me a Message</h3>
+                <form id="contactForm">
+                    <div class="form-row"><div class="form-group"><label for="name">Your Name</label><input type="text" id="name" placeholder="John Doe" required></div><div class="form-group"><label for="email">Your Email</label><input type="email" id="email" placeholder="john@example.com" required></div></div>
+                    <div class="form-group"><label for="subject">Subject</label><input type="text" id="subject" placeholder="How can I help you?" required></div>
+                    <div class="form-group"><label for="message">Message</label><textarea id="message" placeholder="Type your message here..." required></textarea></div>
+                    <button type="submit" class="btn-submit"><span class="iconify" data-icon="mdi:send" style="vertical-align:middle;margin-right:6px"></span> Send Message</button>
+                    <div class="form-toast" id="formToast"><span class="iconify" data-icon="mdi:check-circle"></span> Message sent successfully!</div>
+                </form>
+            </div>
+        </div>
+    </div></section>
+    <footer class="footer"><div class="footer-inner"><div class="footer-left"><div class="footer-name">Sah Saurav Krishna</div><p>Student at Govt. Polytechnic, Daman<br>Pursuing Diploma in Computer Engineering</p></div><div class="footer-center">© 2025 Sah Saurav Krishna. All rights reserved.</div><div class="footer-right"><div class="social-icons"><a href="https://www.facebook.com/share/18Tkq2KDax/" target="_blank" rel="noopener" aria-label="Facebook"><span class="iconify" data-icon="mdi:facebook"></span></a><a href="https://www.instagram.com/saurav.k001?igsh=Z2lhZ2pseHZxNTBz" target="_blank" rel="noopener" aria-label="Instagram"><span class="iconify" data-icon="mdi:instagram"></span></a><a href="https://www.linkedin.com/in/saurav-sah-702617249?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="iconify" data-icon="mdi:linkedin"></span></a><a href="https://github.com/Sauravsah9033" target="_blank" rel="noopener" aria-label="GitHub"><span class="iconify" data-icon="mdi:github"></span></a><a href="https://x.com/Sauravbhai123" target="_blank" rel="noopener" aria-label="Twitter"><span class="iconify" data-icon="mdi:twitter"></span></a></div></div></div></footer>
+</div>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><span class="iconify" data-icon="mdi:chevron-up"></span></button>
+
+<script>
+!function(){const d=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],m=['January','February','March','April','May','June','July','August','September','October','November','December'],n=new Date();document.getElementById('currentDate').textContent=d[n.getDay()]+' | '+m[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear()}();
+
+const pL=document.getElementById('pageLoader'),pT=document.getElementById('pageTransition'),pS=document.querySelectorAll('.page-section');let cP='home',iN=false;
+function resetLoaderAnim(){const r=pL.querySelector('.loader-ring-fill'),b=pL.querySelector('.loader-bar-fill');r.style.animation='none';r.offsetHeight;r.style.animation='ringDraw 1.2s cubic-bezier(.4,0,.2,1) forwards';b.style.animation='none';b.offsetHeight;b.style.animation='barFill 1s cubic-bezier(.4,0,.2,1) forwards'}
+function navTo(p){if(p===cP||iN)return;iN=true;resetLoaderAnim();pT.classList.remove('leaving');pT.classList.add('entering');setTimeout(()=>{pL.classList.remove('hidden');pS.forEach(s=>s.classList.remove('active','visible'));const t=document.getElementById('page-'+p);if(t){t.classList.add('active');window.scrollTo({top:0});t.querySelectorAll('.reveal').forEach(e=>e.classList.remove('visible'));t.querySelectorAll('.skill-fill').forEach(f=>f.style.width='0')}setTimeout(()=>{pT.classList.remove('entering');pT.classList.add('leaving');setTimeout(()=>{pT.classList.remove('leaving');pL.classList.add('hidden');if(t){t.classList.add('visible');setTimeout(()=>{t.querySelectorAll('.reveal').forEach(e=>rO.observe(e));t.querySelectorAll('.skill-fill').forEach(f=>sO.observe(f))},80)}document.querySelectorAll('.nav-links a').forEach(l=>{l.classList.remove('active');if(l.dataset.page===p)l.classList.add('active')});cP=p;iN=false},300)},700)},500)}
+document.querySelectorAll('[data-page]').forEach(l=>{l.addEventListener('click',function(e){e.preventDefault();closeMobileMenu();navTo(this.dataset.page)})});
+
+const tS=['Computer Engineering Student','Quick Learner','Web Developer','Problem Solver','Data Analyst'];let sI=0,cI=0,dl=false;const tE=document.getElementById('typedText');
+function tEf(){const c=tS[sI];if(dl){tE.textContent=c.substring(0,cI--);if(cI<0){dl=false;sI=(sI+1)%tS.length}}else{tE.textContent=c.substring(0,++cI);if(cI===c.length){dl=true;setTimeout(tEf,2000);return}}setTimeout(tEf,dl?50:100)}
+tEf();
+
+const bT=document.getElementById('backToTop');window.addEventListener('scroll',()=>bT.classList.toggle('show',window.scrollY>400));bT.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* HAMBURGER TOGGLE - Fast open/close */
+const hamburger=document.getElementById('hamburger'),mobileMenu=document.getElementById('mobileMenu');
+function closeMobileMenu(){hamburger.classList.remove('open');mobileMenu.classList.remove('open')}
+hamburger.addEventListener('click',function(){
+    const isOpen=hamburger.classList.toggle('open');
+    if(isOpen){mobileMenu.classList.add('open')}else{mobileMenu.classList.remove('open')}
+});
+
+const rO=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');rO.unobserve(x.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(e=>rO.observe(e));
+const sO=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.style.width=x.target.dataset.width+'%';sO.unobserve(x.target)}})},{threshold:.4});
+document.querySelectorAll('.skill-fill').forEach(f=>sO.observe(f));
+
+const gE=document.getElementById('cursorGlow');
+if(window.matchMedia('(pointer:fine)').matches){document.addEventListener('mousemove',e=>{gE.style.left=e.clientX+'px';gE.style.top=e.clientY+'px'})}else{gE.style.display='none'}
+
+document.getElementById('contactForm').addEventListener('submit',function(e){e.preventDefault();const t=document.getElementById('formToast');t.classList.add('show');this.reset();setTimeout(()=>t.classList.remove('show'),4000)});
+window.addEventListener('load',()=>setTimeout(()=>pL.classList.add('hidden'),1400));
+</script>
+</body>
+</html>
